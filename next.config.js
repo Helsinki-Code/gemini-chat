@@ -16,9 +16,18 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   
+  // Webpack configuration
+  webpack: (config) => {
+    config.module.rules.push({
+      test: /\.css$/,
+      use: ['style-loader', 'css-loader', 'postcss-loader'],
+    });
+    return config;
+  },
+  
   // Enable progressive web app features
   experimental: {
-    optimizeCss: false, // Disable CSS optimization
+    optimizeCss: true, // Re-enable CSS optimization
   },
   
   // Configure headers for security
