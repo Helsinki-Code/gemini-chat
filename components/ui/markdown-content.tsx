@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import { Components } from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { cn } from "@/lib/utils";
 
@@ -7,6 +8,28 @@ interface MarkdownContentProps {
   content: string;
   className?: string;
 }
+
+interface CodeProps {
+  inline?: boolean;
+  className?: string;
+  children: React.ReactNode;
+}
+
+// Define the code component separately with proper typing
+const CodeBlock = ({ inline, className, children, ...props }: CodeProps) => {
+  const match = /language-(\w+)/.exec(className || '');
+  return !inline ? (
+    <pre className="bg-zinc-950 dark:bg-zinc-900 rounded-md p-4 overflow-x-auto mb-4">
+      <code className={cn("text-sm", match?.[1] && `language-${match[1]}`)} {...props}>
+        {children}
+      </code>
+    </pre>
+  ) : (
+    <code className="bg-zinc-100 dark:bg-zinc-800 rounded px-1.5 py-0.5 text-sm" {...props}>
+      {children}
+    </code>
+  );
+};
 
 export function MarkdownContent({ content, className }: MarkdownContentProps) {
   return (
@@ -32,20 +55,7 @@ export function MarkdownContent({ content, className }: MarkdownContentProps) {
               {children}
             </blockquote>
           ),
-          code: ({ node, inline, className, children, ...props }) => {
-            const match = /language-(\w+)/.exec(className || '');
-            return !inline ? (
-              <pre className="bg-zinc-950 dark:bg-zinc-900 rounded-md p-4 overflow-x-auto mb-4">
-                <code className={cn("text-sm", match?.[1] && `language-${match[1]}`)} {...props}>
-                  {children}
-                </code>
-              </pre>
-            ) : (
-              <code className="bg-zinc-100 dark:bg-zinc-800 rounded px-1.5 py-0.5 text-sm" {...props}>
-                {children}
-              </code>
-            );
-          },
+          code: CodeBlock as Components['code'],
           table: ({ children }) => (
             <div className="overflow-x-auto mb-4">
               <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">

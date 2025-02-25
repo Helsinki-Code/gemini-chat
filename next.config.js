@@ -18,7 +18,7 @@ const nextConfig = {
   
   // Enable progressive web app features
   experimental: {
-    optimizeCss: true, // Enable CSS optimization
+    optimizeCss: false, // Disable CSS optimization
   },
   
   // Configure headers for security

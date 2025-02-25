@@ -282,7 +282,7 @@ function FilePreview({ file, onRemove, disabled }: FilePreviewProps) {
           <div className="relative group aspect-square w-full overflow-hidden rounded-lg bg-muted">
             <img
               src={previewUrl}
-              alt={file.name}
+              alt={`Preview of ${file.name}`}
               className="object-cover w-full h-full transition-transform group-hover:scale-105"
             />
           </div>

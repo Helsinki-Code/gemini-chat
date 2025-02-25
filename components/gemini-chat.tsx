@@ -58,7 +58,7 @@ import {
 } from '@/lib/gemini-api';
 
 // Import file uploader component 
-import { FileUploader, FileUploadButton } from '@/components/ui/file-uploader';
+import { FileUploadButton } from '@/components/ui/file-uploader';
 
 // Types for messages
 interface Message {
@@ -433,6 +433,16 @@ const InputFilePreview = ({ file, onRemove }: { file: File; onRemove: () => void
   );
 };
 
+// Get file type icon - move this before the GeminiAdvancedChat component
+const getFileIcon = (file: File) => {
+  const type = file.type;
+  if (type.startsWith('image/')) return <FileImage className="h-4 w-4" />;
+  if (type === 'application/pdf') return <FileText className="h-4 w-4" />;
+  if (type.includes('word') || type.includes('document')) return <FileText className="h-4 w-4" />;
+  if (type.startsWith('video/')) return <FileVideo className="h-4 w-4" />;
+  return <FileIcon className="h-4 w-4" />;
+};
+
 // Main chat component
 export function GeminiAdvancedChat() {
   const { toast } = useToast();
@@ -623,16 +633,6 @@ export function GeminiAdvancedChat() {
     }
   };
   
-  // Get file type icon
-  const getFileIcon = (file: File) => {
-    const type = file.type;
-    if (type.startsWith('image/')) return <ImageIcon className="h-4 w-4" />;
-    if (type === 'application/pdf') return <FileText className="h-4 w-4" />;
-    if (type.startsWith('video/')) return <FileVideo className="h-4 w-4" />;
-    if (type.includes('word') || type.includes('document')) return <FileText className="h-4 w-4" />;
-    return <FileIcon className="h-4 w-4" />;
-  };
-
   // Generate response from Gemini
   const generateResponse = async (prompt: string) => {
     setIsLoading(true);
